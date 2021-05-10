@@ -6,4 +6,4 @@ CamoDroid is an open-source and open-architecture Android application dynamic an
 - It logs the execution of permission-protected API calls made by applications.
 - It benefits from an open architecture. Please feel free to contribute!
 
-For more information and installation manual, please refer to CamoDroid's Wiki.
+For more information and installation manual, please refer to CamoDroid's Wiki on GitHub.
