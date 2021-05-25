@@ -1,68 +1,58 @@
-var logArguments=true;
-var logReturnValue=true;
+var logArguments = true;
+var logReturnValue = true;
 
-var returnValueTag="Returning value=== ";
-var cloakMethodEnterTag="\nCloaking Method=== "
+var returnValueTag = "Returning value=== ";
+var cloakMethodEnterTag = "\nCloaking Method=== "
 
-function concatArguments(argumentsPassed)
-{
-    var result="";
+function concatArguments(argumentsPassed) {
+    var result = "";
     for (var j = 0; j < argumentsPassed.length; j++) {
-        result+=("arg[" + j + "]: " + argumentsPassed[j]+"\n");
+        result += ("arg[" + j + "]: " + argumentsPassed[j] + "\n");
     }
     return result;
 }
 
-function concatReturn(str,res)
-{
-    var result=str;
-    result+="Result is: "+res+"\n";
+function concatReturn(str, res) {
+    var result = str;
+    result += "Result is: " + res + "\n";
     return result;
 }
 
-function printReturnValue(retValue)
-{
-    console.log(returnValueTag+retValue);
+function printReturnValue(retValue) {
+    console.log(returnValueTag + retValue);
 }
 
-function printCloakMethodEnter(classAndMethodName)
-{
-    console.log(cloakMethodEnterTag+classAndMethodName);
+function printCloakMethodEnter(classAndMethodName) {
+    console.log(cloakMethodEnterTag + classAndMethodName);
 }
 
-function superPrint(methodAndClassName, type, retval, isCloackedMethod, methodArgs)
-{
-    var result="";
-    if(isCloackedMethod)
-    {
-        result+="---(Cloacked!) ";
+function superPrint(methodAndClassName, type, retval, isCloackedMethod, methodArgs) {
+    var result = "";
+    if (isCloackedMethod) {
+        result += "---(Cloacked!) ";
     }
-    else
-    {
-        result+="+++ ";
+    else {
+        result += "+++ ";
     }
 
-    result+="Entering "+type+" method=== "+methodAndClassName+"\n";
+    result += "Entering " + type + " method=== " + methodAndClassName + "\n";
 
-    for (var i=0;i<methodArgs.length;i++)
-    {
-        result+=("arg[" + i + "]: " + methodArgs[i]+"\n");
+    for (var i = 0; i < methodArgs.length; i++) {
+        result += ("arg[" + i + "]: " + methodArgs[i] + "\n");
     }
 
-    result+="Return value=== "+retval+"\n";
+    result += "Return value=== " + retval + "\n";
     return result;
 }
 
 
-function createArgumentsLikeObject(...args)
-{
-    var argumentsLikeJavascriptObject= {
+function createArgumentsLikeObject(...args) {
+    var argumentsLikeJavascriptObject = {
         length: arguments.length,
-        splice: function () {}
+        splice: function () { }
     }
-    for (var i=0;i<argumentsLikeJavascriptObject.length;i++)
-    {
-        argumentsLikeJavascriptObject[i]=arguments[i];
+    for (var i = 0; i < argumentsLikeJavascriptObject.length; i++) {
+        argumentsLikeJavascriptObject[i] = arguments[i];
     }
     return argumentsLikeJavascriptObject;
 }
@@ -70,7 +60,7 @@ function createArgumentsLikeObject(...args)
 /*****************************************************************************/
 ///////                   Defining Variables                     //////////////
 /*****************************************************************************/
-var dangerousJavaAPIs=[
+var dangerousJavaAPIs = [
     "android.accounts.AccountAuthenticatorActivity.clearWallpaper",
     "android.accounts.AccountAuthenticatorActivity.removeStickyBroadcast",
     "android.accounts.AccountAuthenticatorActivity.removeStickyBroadcastAsUser",
@@ -467,26 +457,26 @@ var dangerousJavaAPIs=[
     "android.widget.VideoView.start",
     "android.widget.VideoView.stopPlayback",
     "android.widget.VideoView.suspend",
-/*
-    "android.test.IsolatedContext.clearWallpaper",
-    "android.test.IsolatedContext.removeStickyBroadcast",
-    "android.test.IsolatedContext.removeStickyBroadcastAsUser",
-    "android.test.IsolatedContext.setWallpaper",
-    "android.test.IsolatedContext.stopService",
-    "android.test.IsolatedContext.unbindService",
-    "android.test.mock.MockApplication.clearWallpaper",
-    "android.test.mock.MockApplication.removeStickyBroadcast",
-    "android.test.mock.MockApplication.removeStickyBroadcastAsUser",
-    "android.test.mock.MockApplication.setWallpaper",
-    "android.test.mock.MockApplication.stopService",
-    "android.test.mock.MockApplication.unbindService",
-    "android.test.RenamingDelegatingContext.clearWallpaper",
-    "android.test.RenamingDelegatingContext.removeStickyBroadcast",
-    "android.test.RenamingDelegatingContext.removeStickyBroadcastAsUser",
-    "android.test.RenamingDelegatingContext.setWallpaper",
-    "android.test.RenamingDelegatingContext.stopService",
-    "android.test.RenamingDelegatingContext.unbindService",
-*/
+    /*
+        "android.test.IsolatedContext.clearWallpaper",
+        "android.test.IsolatedContext.removeStickyBroadcast",
+        "android.test.IsolatedContext.removeStickyBroadcastAsUser",
+        "android.test.IsolatedContext.setWallpaper",
+        "android.test.IsolatedContext.stopService",
+        "android.test.IsolatedContext.unbindService",
+        "android.test.mock.MockApplication.clearWallpaper",
+        "android.test.mock.MockApplication.removeStickyBroadcast",
+        "android.test.mock.MockApplication.removeStickyBroadcastAsUser",
+        "android.test.mock.MockApplication.setWallpaper",
+        "android.test.mock.MockApplication.stopService",
+        "android.test.mock.MockApplication.unbindService",
+        "android.test.RenamingDelegatingContext.clearWallpaper",
+        "android.test.RenamingDelegatingContext.removeStickyBroadcast",
+        "android.test.RenamingDelegatingContext.removeStickyBroadcastAsUser",
+        "android.test.RenamingDelegatingContext.setWallpaper",
+        "android.test.RenamingDelegatingContext.stopService",
+        "android.test.RenamingDelegatingContext.unbindService",
+    */
     //"java.io.File.$init",
     "android.telephony.TelephonyManager.getNetworkOperatorName",
     "android.telephony.TelephonyManager.getSimOperator",
@@ -494,39 +484,34 @@ var dangerousJavaAPIs=[
     "java.lang.Runtime.exec"
 ];
 
-var dangerousNativeAPIs=[   "/system/lib/libc.so:fopen",
-                            "/system/lib/libc.so:__system_property_get"
-                            
-                        ];
+var dangerousNativeAPIs = ["/system/lib/libc.so:fopen",
+    "/system/lib/libc.so:__system_property_get"
+
+];
 
 
-var cloackedCommands={"which,su":"which,s","getprop":"which s"}
+var cloackedCommands = { "which,su": "which,s", "getprop": "which s" }
 
 /*****************************************************************************/
 ///////                     Monitoring Java APIs                 //////////////
 /*****************************************************************************/
-function monitorDangerousJavaAPIs()
-{
-    for (let i=0;i<dangerousJavaAPIs.length;i++)
-    {
+function monitorDangerousJavaAPIs() {
+    for (let i = 0; i < dangerousJavaAPIs.length; i++) {
         hookJavaAPIAndItsOverloads(dangerousJavaAPIs[i]);
     }
 }
 
-function hookJavaAPIAndItsOverloads(JavaAPIName)
-{
-    var className=JavaAPIName.substring(0,(JavaAPIName.lastIndexOf(".")));
-    var methodName=JavaAPIName.substring(JavaAPIName.lastIndexOf(".")+1);
+function hookJavaAPIAndItsOverloads(JavaAPIName) {
+    var className = JavaAPIName.substring(0, (JavaAPIName.lastIndexOf(".")));
+    var methodName = JavaAPIName.substring(JavaAPIName.lastIndexOf(".") + 1);
 
-    var classHanle=Java.use(className);
-    var methodHandle=classHanle[methodName];
+    var classHanle = Java.use(className);
+    var methodHandle = classHanle[methodName];
 
-    for (let i=0;i<methodHandle.overloads.length;i++)
-    {
-        methodHandle.overloads[i].implementation = function() 
-        {
+    for (let i = 0; i < methodHandle.overloads.length; i++) {
+        methodHandle.overloads[i].implementation = function () {
             var retval = this[methodName].apply(this, arguments);
-            console.log(superPrint(JavaAPIName+"["+i+"]","Java API",retval,false,arguments));
+            console.log(superPrint(JavaAPIName + "[" + i + "]", "Java API", retval, false, arguments));
             return retval;
         };
     }
@@ -538,21 +523,19 @@ function hookJavaAPIAndItsOverloads(JavaAPIName)
 /*****************************************************************************/
 ///////          Monitoring Invoke Calls Using Reflection        //////////////
 /*****************************************************************************/
-function monitorJavaReflectionMethodInvokes()
-{
-    var classHanle=Java.use("java.lang.reflect.Method");
-    var methodHandle=classHanle["invoke"];
+function monitorJavaReflectionMethodInvokes() {
+    var classHanle = Java.use("java.lang.reflect.Method");
+    var methodHandle = classHanle["invoke"];
 
-    methodHandle.overloads[0].implementation=function()
-    {
+    methodHandle.overloads[0].implementation = function () {
         // Entered mehtod
-        var methodAndClassName= this.getDeclaringClass()+"."+this.getName();
-        methodAndClassName=methodAndClassName.replace("class ","");
+        var methodAndClassName = this.getDeclaringClass() + "." + this.getName();
+        methodAndClassName = methodAndClassName.replace("class ", "");
 
         var retval = this["invoke"].apply(this, arguments);
-        console.log(superPrint(methodAndClassName,"Java Reflection",retval,false,arguments));
+        console.log(superPrint(methodAndClassName, "Java Reflection", retval, false, arguments));
         return retval;
-            
+
     };
 }
 
@@ -560,30 +543,25 @@ function monitorJavaReflectionMethodInvokes()
 /*****************************************************************************/
 ///////    TO DO                  Monitoring Native calls        //////////////
 /*****************************************************************************/
-function monitorNativeDangerousMethods()
-{
-    for (let i=0;i<dangerousNativeAPIs.length;i++)
-    {
+function monitorNativeDangerousMethods() {
+    for (let i = 0; i < dangerousNativeAPIs.length; i++) {
         hookNativeAPIAndItsOverloads(dangerousNativeAPIs[i]);
     }
 }
 
-function hookNativeAPIAndItsOverloads(nativeAPIName)
-{
-    var library=nativeAPIName.substring(0,nativeAPIName.lastIndexOf(":"));;
-    var functionName=nativeAPIName.substring(nativeAPIName.lastIndexOf(":")+1);
+function hookNativeAPIAndItsOverloads(nativeAPIName) {
+    var library = nativeAPIName.substring(0, nativeAPIName.lastIndexOf(":"));;
+    var functionName = nativeAPIName.substring(nativeAPIName.lastIndexOf(":") + 1);
 
-    Interceptor.attach(Module.findExportByName(library, functionName), 
-    {
-        onEnter: function(args) 
-        {       
-        },
-
-        onLeave: function(retval) 
+    Interceptor.attach(Module.findExportByName(library, functionName),
         {
-            console.log(superPrint(library+":"+functionName,"Native API",retval,false,[]));
-        }
-    });
+            onEnter: function (args) {
+            },
+
+            onLeave: function (retval) {
+                console.log(superPrint(library + ":" + functionName, "Native API", retval, false, []));
+            }
+        });
 }
 
 
@@ -591,332 +569,297 @@ function hookNativeAPIAndItsOverloads(nativeAPIName)
 ///////                    Cloaking Emulator                     //////////////
 /*****************************************************************************/
 
-function getRandom()
-{
-	return Math.random();
+function getRandom() {
+    return Math.random();
 }
 
 ////*************************         Debugging functions are defined here           ********************/////////////////
-function show(obj)
-{
-	for (const [key, value] of Object.entries(obj)) 
-	{
-		console.log("\n======================================================");
-		console.log("Key is: "+key+ "\nValue is: "+ value + "\n");
-	}
+function show(obj) {
+    for (const [key, value] of Object.entries(obj)) {
+        console.log("\n======================================================");
+        console.log("Key is: " + key + "\nValue is: " + value + "\n");
+    }
 }
 
-function showOverloads(className,methodName)
-{
-	Java.perform(function(){Java.use(className)[methodName].overload()});
-	
+function showOverloads(className, methodName) {
+    Java.perform(function () { Java.use(className)[methodName].overload() });
+
 }
 
-function showFridaToast(text) 
-{ 
+function showFridaToast(text) {
     let context = Java.use('android.app.ActivityThread').currentApplication().getApplicationContext();
 
-    Java.scheduleOnMainThread(function() {
-            var toast = Java.use("android.widget.Toast");
-            toast.makeText(Java.use("android.app.ActivityThread").currentApplication().getApplicationContext(), Java.use("java.lang.String").$new(text), 1).show();
+    Java.scheduleOnMainThread(function () {
+        var toast = Java.use("android.widget.Toast");
+        toast.makeText(Java.use("android.app.ActivityThread").currentApplication().getApplicationContext(), Java.use("java.lang.String").$new(text), 1).show();
     });
 
 };
 
 ////*************************         Global Variables are defined here           ********************/////////////////
 
-let sensorTriggerInterval=500;
+let sensorTriggerInterval = 500;
 
-let android_os_SystemProperties = 
+let android_os_SystemProperties =
 {
-	"qemu.hw.mainkeys": "",
-	"ro.build.description" : "starqltecs-user 10 QP1A.190711.020 G960WVLS7ETH1 release-keys",
-	"net.eth0.dns1" : "",
-	"rild.libpath" : "/vendor/lib64/libsec-ril.so",
-	"ro.radio.use-ppp" : "",
-	"gsm.version.baseband" : "",
-	"ro.build.display.id" :"QP1A.190711.020.G960WVLS7ETH1",
-	"init.svc.console" : "",
-	"ro.product.model": "SM-G960W",
-	"ro.kernel.qemu":"0",
-	"ro.secure":"1",
-    "ro.debuggable":"0",
-    "ro.build.fingerprint" : "samsung/starqltecs/starqltecs:10/QP1A.190711.020/G960WVLS7ETH1:user/release-keys",
-    "ro.product.manufacturer":"Samsung Inc",
-    "ro.product.brand":"Samsung",
-    "ro.product.name":"SM-G960W",
-    "ro.hardware":"qcom",
-    "ro.product.board":"sdm845",
-    "no.such.thing":"2321412255",
-    "ro.build.tags":"release-keys",
-    "ro.build.type":"user",
-    "ro.build.user":"USER",
-    "ro.build.host":"SWDH2812"
+    "qemu.hw.mainkeys": "",
+    "ro.build.description": "starqltecs-user 10 QP1A.190711.020 G960WVLS7ETH1 release-keys",
+    "net.eth0.dns1": "",
+    "rild.libpath": "/vendor/lib64/libsec-ril.so",
+    "ro.radio.use-ppp": "",
+    "gsm.version.baseband": "",
+    "ro.build.display.id": "QP1A.190711.020.G960WVLS7ETH1",
+    "init.svc.console": "",
+    "ro.product.model": "SM-G960W",
+    "ro.kernel.qemu": "0",
+    "ro.secure": "1",
+    "ro.debuggable": "0",
+    "ro.build.fingerprint": "samsung/starqltecs/starqltecs:10/QP1A.190711.020/G960WVLS7ETH1:user/release-keys",
+    "ro.product.manufacturer": "Samsung Inc",
+    "ro.product.brand": "Samsung",
+    "ro.product.name": "SM-G960W",
+    "ro.hardware": "qcom",
+    "ro.product.board": "sdm845",
+    "no.such.thing": "2321412255",
+    "ro.build.tags": "release-keys",
+    "ro.build.type": "user",
+    "ro.build.user": "USER",
+    "ro.build.host": "SWDH2812"
 };
 
-function overideByIndex(className, methodName, overloadIndex, resolver) 
-{
+function overideByIndex(className, methodName, overloadIndex, resolver) {
     let handle = Java.use(className);
     let methodHandle = handle[methodName].overloads[overloadIndex];
-    methodHandle.implementation = function(...parameters) 
-    {
+    methodHandle.implementation = function (...parameters) {
         return resolver.call(this, ...parameters);
     };
 }
 
-function overideByOverload(className, methodName, functionArgTypes, resolver) 
-{
+function overideByOverload(className, methodName, functionArgTypes, resolver) {
     let handle = Java.use(className);
     let methodHandle = handle[methodName].overload(...functionArgTypes);
-    methodHandle.implementation = function(...parameters) {
+    methodHandle.implementation = function (...parameters) {
         return resolver.call(this, ...parameters);
     };
 }
 
 
-function CloakEmulator()
-{	
-//****************************************************************		Overriding Functions		****************************************************************//
+function CloakEmulator() {
+    //****************************************************************		Overriding Functions		****************************************************************//
 
     // Defining Override Function to use Later for Overriding cerain Functions
-	overideByIndex('java.io.File', '$init', 1 , function(pathString) 
-	{
-        
-		//console.log("java.io.File.$init[1] was called with "+ pathString);
-		let map = {
-			// morphues
-			"/proc/misc": "/proc/sys/net/ipv4/tcp_syncookies",
-			"/proc/ioports" : "/proc/sys/net/ipv4/tcp_syncookies",
-			"/proc/uid_stat" : "/proc/sys/net/ipv4/tcp_syncookies",
-			"/sys/devices/virtual/misc/cpu_dma_latency/uevent" : "/proc/sys/net/ipv4/tcp_syncookies",
-			"/sys/devices/virtual/ppp" : "/proc/sys/net/ipv4/tcp_syncookies",
-			"/sys/devices/virtual/switch" : "/proc/sys/net/ipv4/tcp_syncookies",
-			"/sys/module/alarm/parameters" : "/proc/sys/net/ipv4/tcp_syncookies",
-			"/sys/devices/system/cpu/cpu0/cpufreq" : "/proc/sys/net/ipv4/tcp_syncookies",
-			"/sys/devices/virtual/misc/android_adb" : "/proc/sys/net/ipv4/tcp_syncookies",
-			"/proc/sys/net/ipv4/tcp_syncookies" : "data/NullFile"
-		
-		};
+    overideByIndex('java.io.File', '$init', 1, function (pathString) {
+
+        //console.log("java.io.File.$init[1] was called with "+ pathString);
+        let map = {
+            // morphues
+            "/proc/misc": "/proc/sys/net/ipv4/tcp_syncookies",
+            "/proc/ioports": "/proc/sys/net/ipv4/tcp_syncookies",
+            "/proc/uid_stat": "/proc/sys/net/ipv4/tcp_syncookies",
+            "/sys/devices/virtual/misc/cpu_dma_latency/uevent": "/proc/sys/net/ipv4/tcp_syncookies",
+            "/sys/devices/virtual/ppp": "/proc/sys/net/ipv4/tcp_syncookies",
+            "/sys/devices/virtual/switch": "/proc/sys/net/ipv4/tcp_syncookies",
+            "/sys/module/alarm/parameters": "/proc/sys/net/ipv4/tcp_syncookies",
+            "/sys/devices/system/cpu/cpu0/cpufreq": "/proc/sys/net/ipv4/tcp_syncookies",
+            "/sys/devices/virtual/misc/android_adb": "/proc/sys/net/ipv4/tcp_syncookies",
+            "/proc/sys/net/ipv4/tcp_syncookies": "data/NullFile"
+
+        };
         var retval;
-		if ( pathString in map )
-		{
-			retval=this.$init(map[pathString]);
-            superPrint("java.io.File.$init","Java API",retval,true,pathString);
-		}
-		else
-		{
-			retval=this.$init(pathString);
-            superPrint("java.io.File.$init","Java API",retval,false,pathString);
-		}
+        if (pathString in map) {
+            retval = this.$init(map[pathString]);
+            superPrint("java.io.File.$init", "Java API", retval, true, pathString);
+        }
+        else {
+            retval = this.$init(pathString);
+            superPrint("java.io.File.$init", "Java API", retval, false, pathString);
+        }
         //logReturnValue(retval);
         return retval;
-	});
+    });
 
-	overideByIndex('android.telephony.TelephonyManager', 'getDeviceId', 0 , function() {var retval='333650816387732'; console.log(superPrint('android.telephony.TelephonyManager.getDeviceId',"Java API",retval,true,[])); return retval; }  );
-	overideByIndex('android.telephony.TelephonyManager', 'getNetworkOperatorName', 0 , function() {var retval='TELUS INC'; console.log(superPrint('android.telephony.TelephonyManager.getNetworkOperatorName',"Java API",retval,true,[])); return retval; }  );
-    overideByIndex('android.telephony.TelephonyManager', 'getSimOperator', 0 , function() {var retval='TELUS INC'; console.log(superPrint('android.telephony.TelephonyManager.getSimOperator',"Java API",retval,true,[])); return retval; }  );
-    overideByIndex('android.telephony.TelephonyManager', 'getLine1Number', 0 , function() {var retval='3334567656'; console.log(superPrint('android.telephony.TelephonyManager.getLine1Number',"Java API",retval,true,[])); return retval; }  );
-    overideByIndex('android.telephony.TelephonyManager', 'getSubscriberId', 0 , function() {var retval='5424643325'; console.log(superPrint('android.telephony.TelephonyManager.getSubscriberId',"Java API",retval,true,[])); return retval; }  );
-    overideByIndex('android.telephony.TelephonyManager', 'getVoiceMailNumber', 0 , function() {var retval='3334567656'; console.log(superPrint('android.telephony.TelephonyManager.getVoiceMailNumber',"Java API",retval,true,[])); return retval; }  );
-    overideByIndex('android.telephony.TelephonyManager', 'getImei', 0 , function() {var retval='333650816387732'; console.log(superPrint('android.telephony.TelephonyManager.getImei',"Java API",retval,true,[])); return retval; }  );
-    
+    overideByIndex('android.telephony.TelephonyManager', 'getDeviceId', 0, function () { var retval = '333650816387732'; console.log(superPrint('android.telephony.TelephonyManager.getDeviceId', "Java API", retval, true, [])); return retval; });
+    overideByIndex('android.telephony.TelephonyManager', 'getNetworkOperatorName', 0, function () { var retval = 'TELUS INC'; console.log(superPrint('android.telephony.TelephonyManager.getNetworkOperatorName', "Java API", retval, true, [])); return retval; });
+    overideByIndex('android.telephony.TelephonyManager', 'getSimOperator', 0, function () { var retval = 'TELUS INC'; console.log(superPrint('android.telephony.TelephonyManager.getSimOperator', "Java API", retval, true, [])); return retval; });
+    overideByIndex('android.telephony.TelephonyManager', 'getLine1Number', 0, function () { var retval = '3334567656'; console.log(superPrint('android.telephony.TelephonyManager.getLine1Number', "Java API", retval, true, [])); return retval; });
+    overideByIndex('android.telephony.TelephonyManager', 'getSubscriberId', 0, function () { var retval = '5424643325'; console.log(superPrint('android.telephony.TelephonyManager.getSubscriberId', "Java API", retval, true, [])); return retval; });
+    overideByIndex('android.telephony.TelephonyManager', 'getVoiceMailNumber', 0, function () { var retval = '3334567656'; console.log(superPrint('android.telephony.TelephonyManager.getVoiceMailNumber', "Java API", retval, true, [])); return retval; });
+    overideByIndex('android.telephony.TelephonyManager', 'getImei', 0, function () { var retval = '333650816387732'; console.log(superPrint('android.telephony.TelephonyManager.getImei', "Java API", retval, true, [])); return retval; });
+
     console.warn("\nCloaking BuildProp..");
-	Java.use("android.os.Build")['FINGERPRINT'].value="GalaxyS9/release-keys";
-	Java.use("android.os.Build")['MODEL'].value="GalaxyS9";
-	Java.use("android.os.Build")['MANUFACTURER'].value="Samsung Inc";
-	Java.use("android.os.Build")['BRAND'].value="Samsung";
-	Java.use("android.os.Build")['PRODUCT'].value="SM-G960W";
-	Java.use("android.os.Build")['HARDWARE'].value="qcom";
-	Java.use("android.os.Build")['BOARD'].value="sdm845";
-	Java.use("android.os.Build")['SERIAL'].value="2321412255";
-	Java.use("android.os.Build")['TAGS'].value="release-keys";
-	Java.use("android.os.Build")['USER'].value="USER";
-	Java.use("android.os.Build")['HOST'].value="SWDH2812";
-    Java.use("android.os.Build")['MODEL'].implementation=function(){}
-    
-	Interceptor.attach(Module.findExportByName( "libc.so" , "__system_property_get" ), 
-	{
-		onEnter: function ( args ) 
-		{    
-			// reading the input argument and saving it in _name variable in the same instance
-			this._name = args[0].readCString();
-			//console.log(this._name)
-            // savinng the pointer to return value into _value in the same instance
-			this._value = args[1];
-			//console.log("Native function libc.so__system_property_get was called with "+ this._name);
-			//console.log("Argument is: "+this._name);
-		},
-		onLeave: function ( result ) 
-		{	
-			// checking if the property is in the monitored properties
-			if (this._name in android_os_SystemProperties)
-			{
-				// geting the fake return value 
-				let fakeValue= android_os_SystemProperties[this._name];
-				// writing the fake value into the pointer to the second argument 
-				Memory.writeUtf8String(this._value,fakeValue);
+    Java.use("android.os.Build")['FINGERPRINT'].value = "GalaxyS9/release-keys";
+    Java.use("android.os.Build")['MODEL'].value = "GalaxyS9";
+    Java.use("android.os.Build")['MANUFACTURER'].value = "Samsung Inc";
+    Java.use("android.os.Build")['BRAND'].value = "Samsung";
+    Java.use("android.os.Build")['PRODUCT'].value = "SM-G960W";
+    Java.use("android.os.Build")['HARDWARE'].value = "qcom";
+    Java.use("android.os.Build")['BOARD'].value = "sdm845";
+    Java.use("android.os.Build")['SERIAL'].value = "2321412255";
+    Java.use("android.os.Build")['TAGS'].value = "release-keys";
+    Java.use("android.os.Build")['USER'].value = "USER";
+    Java.use("android.os.Build")['HOST'].value = "SWDH2812";
+    Java.use("android.os.Build")['MODEL'].implementation = function () { }
 
-                console.log(superPrint("libc.so:__system_property_get","Native API",fakeValue,true,createArgumentsLikeObject(this._name)));
-			}
-            else
-            {
-                console.log(superPrint("libc.so:__system_property_get","Native API",this._value,false,createArgumentsLikeObject(this._name)));
-            }
-		}
-	});
-
-	// File sys checks in Java
-	Java.use('java.io.File')['$init'].overload('java.lang.String','java.lang.String').implementation= function(path,fileName) 
-	{
-        
-		let pathString=path+fileName;
-		//console.log(pathString)
-		let map = 
-		{
-			// Rootbeer
-			"/system/xbin/busybox" : "/system/xbin/busybo",
-			"/system/bin/su": "/system/bin/s",
-			"/system/xbin/su": "/system/bin/s"
-			
-		};
-        var retval;
-		if (map[pathString]!=null)
-		{
-			retval=this.$init("/system/bin/","suasaa"); 
-            superPrint("java.io.File.$init(java.lang.String,java.lang.String)","Java API",retval,true,["/system/bin/","suasaa"]); 
-		}
-        else
+    Interceptor.attach(Module.findExportByName("libc.so", "__system_property_get"),
         {
-            retval=this.$init(path,fileName);
-            superPrint("java.io.File.$init(java.lang.String,java.lang.String)","Java API",retval,false,[path,fileName]); 
+            onEnter: function (args) {
+                // reading the input argument and saving it in _name variable in the same instance
+                this._name = args[0].readCString();
+                //console.log(this._name)
+                // savinng the pointer to return value into _value in the same instance
+                this._value = args[1];
+                //console.log("Native function libc.so__system_property_get was called with "+ this._name);
+                //console.log("Argument is: "+this._name);
+            },
+            onLeave: function (result) {
+                // checking if the property is in the monitored properties
+                if (this._name in android_os_SystemProperties) {
+                    // geting the fake return value 
+                    let fakeValue = android_os_SystemProperties[this._name];
+                    // writing the fake value into the pointer to the second argument 
+                    Memory.writeUtf8String(this._value, fakeValue);
+
+                    console.log(superPrint("libc.so:__system_property_get", "Native API", fakeValue, true, createArgumentsLikeObject(this._name)));
+                }
+                else {
+                    console.log(superPrint("libc.so:__system_property_get", "Native API", this._value, false, createArgumentsLikeObject(this._name)));
+                }
+            }
+        });
+
+    // File sys checks in Java
+    Java.use('java.io.File')['$init'].overload('java.lang.String', 'java.lang.String').implementation = function (path, fileName) {
+
+        let pathString = path + fileName;
+        //console.log(pathString)
+        let map =
+        {
+            // Rootbeer
+            "/system/xbin/busybox": "/system/xbin/busybo",
+            "/system/bin/su": "/system/bin/s",
+            "/system/xbin/su": "/system/bin/s"
+
+        };
+        var retval;
+        if (map[pathString] != null) {
+            retval = this.$init("/system/bin/", "suasaa");
+            superPrint("java.io.File.$init(java.lang.String,java.lang.String)", "Java API", retval, true, ["/system/bin/", "suasaa"]);
         }
-        
+        else {
+            retval = this.$init(path, fileName);
+            superPrint("java.io.File.$init(java.lang.String,java.lang.String)", "Java API", retval, false, [path, fileName]);
+        }
+
         //logReturnValue(retval);
-		return retval; 
-	};
-	
-	// File sys checks in C
-	Interceptor.attach(Module.findExportByName( "libc.so" , "fopen" ), 
-	{
-        
-		onEnter: function ( args ) 
-		{
-			var prop = Memory.readCString(args[ 0 ]);
-			//console.log("libc.so  fopen was called with "+ prop + "   !!!!!!!!!");
-			let map = 
-			{
-				"/data/local/su" : "/system/bin/s",
-				"/data/local/bin/su": "/system/bin/s",
-				"/data/local/xbin/su": "/system/bin/s",
-				"/sbin/su": "/system/bin/s",
-				"/su/bin/su": "/system/bin/s",
-				"/system/bin/su": "/system/bin/s",
-				"/system/bin/.ext/su": "/system/bin/s",
-				"/system/bin/failsafe/su": "/system/bin/s",
-				"/system/sd/xbin/su": "/system/bin/s",
-				"/system/usr/we-need-root/su": "/system/bin/s",
-				"/system/xbin/su": "/system/bin/s",
-				"/data/su": "/system/bin/s",
-				"/dev/su": "/system/bin/s",
-				"/system/sbin/su": "/system/bin/s",
-				"/vendor/bin/su": "/system/bin/s",
-				"/vendor/xbin/su": "/system/bin/s",
-				"/data/local/su": "/system/bin/s",
-				"/system/xbin/busybox" : "/system/bin/s",
-				"/system/xbin/su": "/system/bin/s"
-			};
-			//console.log("prop is"+prop);
-            /*
-            var argumentsLikeJavascriptObject= {
-                length: 1,
-                splice: function () {}
+        return retval;
+    };
+
+    // File sys checks in C
+    Interceptor.attach(Module.findExportByName("libc.so", "fopen"),
+        {
+
+            onEnter: function (args) {
+                var prop = Memory.readCString(args[0]);
+                //console.log("libc.so  fopen was called with "+ prop + "   !!!!!!!!!");
+                let map =
+                {
+                    "/data/local/su": "/system/bin/s",
+                    "/data/local/bin/su": "/system/bin/s",
+                    "/data/local/xbin/su": "/system/bin/s",
+                    "/sbin/su": "/system/bin/s",
+                    "/su/bin/su": "/system/bin/s",
+                    "/system/bin/su": "/system/bin/s",
+                    "/system/bin/.ext/su": "/system/bin/s",
+                    "/system/bin/failsafe/su": "/system/bin/s",
+                    "/system/sd/xbin/su": "/system/bin/s",
+                    "/system/usr/we-need-root/su": "/system/bin/s",
+                    "/system/xbin/su": "/system/bin/s",
+                    "/data/su": "/system/bin/s",
+                    "/dev/su": "/system/bin/s",
+                    "/system/sbin/su": "/system/bin/s",
+                    "/vendor/bin/su": "/system/bin/s",
+                    "/vendor/xbin/su": "/system/bin/s",
+                    "/data/local/su": "/system/bin/s",
+                    "/system/xbin/busybox": "/system/bin/s",
+                    "/system/xbin/su": "/system/bin/s"
+                };
+                //console.log("prop is"+prop);
+                /*
+                var argumentsLikeJavascriptObject= {
+                    length: 1,
+                    splice: function () {}
+                }
+                argumentsLikeJavascriptObject[0]=prop;
+                */
+
+                if (map[prop] != null) {
+                    var fakeValue = map[prop];
+                    Memory.writeUtf8String(args[0], fakeValue);
+                    console.log(superPrint("libc.so:fopen", "Native API", "File *", true, createArgumentsLikeObject(prop)));
+                }
+                else {
+                    console.log(superPrint("libc.so:fopen", "Native API", "File *", false, createArgumentsLikeObject(prop)));
+                }
+
+            },
+            onLeave: function (retval) {
             }
-            argumentsLikeJavascriptObject[0]=prop;
-            */
-        
-            if (map[prop]!=null) 
-			{
-                var fakeValue=map[prop];
-                Memory.writeUtf8String(args[0],fakeValue );
-                console.log(superPrint("libc.so:fopen","Native API","File *",true,createArgumentsLikeObject(prop)));
-			}
-            else
-            {
-                console.log(superPrint("libc.so:fopen","Native API","File *",false,createArgumentsLikeObject(prop)));
-            }
-            
-		},
-		onLeave: function ( retval ) 
-        {  
+        });
+
+    overideByIndex("java.lang.Runtime", "exec", 5, function (input) {
+        if (cloackedCommands[input] != null) {
+            var fakeCommand = cloackedCommands[input];
+            console.log(superPrint("java.lang.Runtime.exec[5]", "Java API", "Process *", true, arguments));
+            arguments[0] = fakeCommand
+            return this["exec"].apply(this, arguments);
         }
-	});
-        
-	overideByIndex("java.lang.Runtime","exec",5, function(input) 
-	{
-        if (cloackedCommands[input]!=null)
-		{
-            var fakeCommand=cloackedCommands[input];
-            console.log(superPrint("java.lang.Runtime.exec[5]","Java API","Process *",true,arguments));
-            arguments[0]=fakeCommand
-            return this["exec"].apply(this,arguments);
-		}
-		else
-		{
-            console.log(superPrint("java.lang.Runtime.exec[5]","Java API","Process *",false,arguments));
-            return this["exec"].apply(this,arguments);
-		}
-	});
+        else {
+            console.log(superPrint("java.lang.Runtime.exec[5]", "Java API", "Process *", false, arguments));
+            return this["exec"].apply(this, arguments);
+        }
+    });
 
-	function triggerSensor(SensorEventListenerInstance)
-	{
-		console.log("triggerSensor was called!");
-		Java.scheduleOnMainThread(function()
-		{
-		let sensorEventClass = Java.use("android.hardware.SensorEvent");
-		let sensorEventInstance = sensorEventClass.$new(3);
-		let sensorEventClassValuesField=sensorEventClass.class.getField('values');
+    function triggerSensor(SensorEventListenerInstance) {
+        console.log("triggerSensor was called!");
+        Java.scheduleOnMainThread(function () {
+            let sensorEventClass = Java.use("android.hardware.SensorEvent");
+            let sensorEventInstance = sensorEventClass.$new(3);
+            let sensorEventClassValuesField = sensorEventClass.class.getField('values');
 
-		let sensorEventInstanceValuesField=sensorEventClassValuesField.get(sensorEventInstance);
-		let valuesJavaArray = Java.array('float',sensorEventInstanceValuesField);
-		
-		// set x
-		valuesJavaArray[0]=getRandom();
-		// set y
-		valuesJavaArray[1]=getRandom();
-		// set z
-		valuesJavaArray[2]=getRandom();
+            let sensorEventInstanceValuesField = sensorEventClassValuesField.get(sensorEventInstance);
+            let valuesJavaArray = Java.array('float', sensorEventInstanceValuesField);
 
-		SensorEventListenerInstance.onSensorChanged(sensorEventInstance);
-		});
-	}	
+            // set x
+            valuesJavaArray[0] = getRandom();
+            // set y
+            valuesJavaArray[1] = getRandom();
+            // set z
+            valuesJavaArray[2] = getRandom();
 
-	// base overload function for registering a sensor listener (other overloads call this overload)
-	overideByOverload("android.hardware.SensorManager","registerListener",['android.hardware.SensorEventListener', 'android.hardware.Sensor', 'int', 'android.os.Handler'], function(...input) 
-	{
-		console.log("registerListener was called !");	
-		let SensorEventListenerInstance = Java.cast(arguments[0], Java.use(arguments[0].$className));
-		// Trigger sensor in certain intervals
-		setInterval(() => 
-		{
-		triggerSensor(SensorEventListenerInstance);
-		}, sensorTriggerInterval);
+            SensorEventListenerInstance.onSensorChanged(sensorEventInstance);
+        });
+    }
 
-		return this.registerListener(...input);
-	});
+    // base overload function for registering a sensor listener (other overloads call this overload)
+    overideByOverload("android.hardware.SensorManager", "registerListener", ['android.hardware.SensorEventListener', 'android.hardware.Sensor', 'int', 'android.os.Handler'], function (...input) {
+        console.log("registerListener was called !");
+        let SensorEventListenerInstance = Java.cast(arguments[0], Java.use(arguments[0].$className));
+        // Trigger sensor in certain intervals
+        setInterval(() => {
+            triggerSensor(SensorEventListenerInstance);
+        }, sensorTriggerInterval);
+
+        return this.registerListener(...input);
+    });
 }
-
-
-
 
 /*****************************************************************************/
 ///////            Main Function          //////////////
 /*****************************************************************************/
-
-Java.perform(function() 
-{
+Java.perform(function () {
     monitorDangerousJavaAPIs();
     monitorJavaReflectionMethodInvokes();
     //monitorNativeDangerousMethods();
-    CloakEmulator();   
+    CloakEmulator();
 });
 
