@@ -491,13 +491,7 @@ var dangerousJavaAPIs=[
     "android.telephony.TelephonyManager.getNetworkOperatorName",
     "android.telephony.TelephonyManager.getSimOperator",
     "android.telephony.TelephonyManager.getImei",
-    "java.lang.Runtime.exec",
-
-    //"com.android.system.admin.COcCccl.oCIlCll"
-    //"com.security.cert.a.a.a.a",
-    //"com.b.a.a.a.a"
-    //"com.google.android.v54new.network.HttpConnection.postEncrypt"
-    
+    "java.lang.Runtime.exec"
 ];
 
 var dangerousNativeAPIs=[   "/system/lib/libc.so:fopen",
@@ -554,7 +548,6 @@ function monitorJavaReflectionMethodInvokes()
         // Entered mehtod
         var methodAndClassName= this.getDeclaringClass()+"."+this.getName();
         methodAndClassName=methodAndClassName.replace("class ","");
-        
 
         var retval = this["invoke"].apply(this, arguments);
         console.log(superPrint(methodAndClassName,"Java Reflection",retval,false,arguments));
@@ -584,27 +577,11 @@ function hookNativeAPIAndItsOverloads(nativeAPIName)
     {
         onEnter: function(args) 
         {       
-    
-        //console.log("\n+++  Dangerous Native API Called=== "+nativeAPIName);
-        //console.log("ArgCoun="+args[10]);
-
-        // I could not log the arguments of native methods as the type and number of arguments passed to args is not known for C. In other words, for one function args may contain one int, for another one it may contain 5 strings. Type and number of arguments for args is not specefied in it I think. 
-        
-        // print backtrace
-        //console.log("\nBacktrace:\n" + Thread.backtrace(this.context, Backtracer.ACCURATE).map(DebugSymbol.fromAddress).join("\n"));
         },
 
         onLeave: function(retval) 
         {
             console.log(superPrint(library+":"+functionName,"Native API",retval,false,[]));
-            //logReturnValue(retval);
-            /*
-            if (this.flag) {
-                // print retval
-                console.log("\nretval: " + retval);
-                console.warn("\n*** exiting open");
-            }
-            */
         }
     });
 }
@@ -619,7 +596,6 @@ function getRandom()
 	return Math.random();
 }
 
-
 ////*************************         Debugging functions are defined here           ********************/////////////////
 function show(obj)
 {
@@ -629,7 +605,6 @@ function show(obj)
 		console.log("Key is: "+key+ "\nValue is: "+ value + "\n");
 	}
 }
-
 
 function showOverloads(className,methodName)
 {
@@ -662,14 +637,10 @@ let android_os_SystemProperties =
 	"gsm.version.baseband" : "",
 	"ro.build.display.id" :"QP1A.190711.020.G960WVLS7ETH1",
 	"init.svc.console" : "",
-	//"ro.kernel.qemu" : "",
 	"ro.product.model": "SM-G960W",
-
-	//
 	"ro.kernel.qemu":"0",
 	"ro.secure":"1",
     "ro.debuggable":"0",
-    //
     "ro.build.fingerprint" : "samsung/starqltecs/starqltecs:10/QP1A.190711.020/G960WVLS7ETH1:user/release-keys",
     "ro.product.manufacturer":"Samsung Inc",
     "ro.product.brand":"Samsung",
@@ -686,12 +657,9 @@ let android_os_SystemProperties =
 function overideByIndex(className, methodName, overloadIndex, resolver) 
 {
     let handle = Java.use(className);
-    //console.log("Method "+className+"."+methodName+" has "+ handle[methodName].overloads.length+" overloads!");
     let methodHandle = handle[methodName].overloads[overloadIndex];
     methodHandle.implementation = function(...parameters) 
     {
-        //console.log("OLD IS:"+this[methodName].apply(this, arguments)); 
-        //console.log(className, methodName, handle[methodName].overloads.map(i=>i.length));
         return resolver.call(this, ...parameters);
     };
 }
@@ -699,25 +667,18 @@ function overideByIndex(className, methodName, overloadIndex, resolver)
 function overideByOverload(className, methodName, functionArgTypes, resolver) 
 {
     let handle = Java.use(className);
-    //console.log("Method "+className+"."+methodName+" has "+ handle[methodName].overloads.length+" overloads!");
     let methodHandle = handle[methodName].overload(...functionArgTypes);
     methodHandle.implementation = function(...parameters) {
-        //console.log(className, methodName, handle[methodName].overloads.map(i=>i.length));
         return resolver.call(this, ...parameters);
     };
 }
 
 
 function CloakEmulator()
-{
-    // Defining Override Function to use Later for Overriding cerain Functions
-
-	
-
-	
+{	
 //****************************************************************		Overriding Functions		****************************************************************//
 
-//*********************************		Morpheus		******************************************//
+    // Defining Override Function to use Later for Overriding cerain Functions
 	overideByIndex('java.io.File', '$init', 1 , function(pathString) 
 	{
         
@@ -751,9 +712,6 @@ function CloakEmulator()
         return retval;
 	});
 
-
-//**************************       A large-scale study on the adoption of anti-debugging and anti-tampering protections in android apps **************************//
-	//hasEmulatorTelephonyProperty()
 	overideByIndex('android.telephony.TelephonyManager', 'getDeviceId', 0 , function() {var retval='333650816387732'; console.log(superPrint('android.telephony.TelephonyManager.getDeviceId',"Java API",retval,true,[])); return retval; }  );
 	overideByIndex('android.telephony.TelephonyManager', 'getNetworkOperatorName', 0 , function() {var retval='TELUS INC'; console.log(superPrint('android.telephony.TelephonyManager.getNetworkOperatorName',"Java API",retval,true,[])); return retval; }  );
     overideByIndex('android.telephony.TelephonyManager', 'getSimOperator', 0 , function() {var retval='TELUS INC'; console.log(superPrint('android.telephony.TelephonyManager.getSimOperator',"Java API",retval,true,[])); return retval; }  );
@@ -761,10 +719,7 @@ function CloakEmulator()
     overideByIndex('android.telephony.TelephonyManager', 'getSubscriberId', 0 , function() {var retval='5424643325'; console.log(superPrint('android.telephony.TelephonyManager.getSubscriberId',"Java API",retval,true,[])); return retval; }  );
     overideByIndex('android.telephony.TelephonyManager', 'getVoiceMailNumber', 0 , function() {var retval='3334567656'; console.log(superPrint('android.telephony.TelephonyManager.getVoiceMailNumber',"Java API",retval,true,[])); return retval; }  );
     overideByIndex('android.telephony.TelephonyManager', 'getImei', 0 , function() {var retval='333650816387732'; console.log(superPrint('android.telephony.TelephonyManager.getImei',"Java API",retval,true,[])); return retval; }  );
-    //overideByIndex('android.telephony.TelephonyManager', 'getImsi', 0 , function() {var retval='333650816387732'; console.log(superPrint('android.telephony.TelephonyManager.getImsi',"Java API",retval,true,[])); return retval; }  );
-
-
-    //hasEmulatorBuildProp()
+    
     console.warn("\nCloaking BuildProp..");
 	Java.use("android.os.Build")['FINGERPRINT'].value="GalaxyS9/release-keys";
 	Java.use("android.os.Build")['MODEL'].value="GalaxyS9";
@@ -777,52 +732,12 @@ function CloakEmulator()
 	Java.use("android.os.Build")['TAGS'].value="release-keys";
 	Java.use("android.os.Build")['USER'].value="USER";
 	Java.use("android.os.Build")['HOST'].value="SWDH2812";
-
     Java.use("android.os.Build")['MODEL'].implementation=function(){}
     
-    /*
-    var CloackedBuildProps={
-        'FINGERPRINT':'GalaxyS9/release-keys',
-        'MODEL':"GalaxyS9",
-        'MANUFACTURER':"Samsung Inc",
-        'BRAND':"Samsung",
-        'PRODUCT':"SM-G960W",
-        'HARDWARE':"qcom",
-        'BOARD':"sdm845",
-        'SERIAL':"2321412255",
-        'TAGS':"release-keys",
-        'USER':"USER",
-        'HOST':"SWDH2812"
-    }    // Obada TBD
-    
-    overideByIndex('android.os.SystemProperties', 'get', 0 , function(input) 
-    {
-        var property=input[0]
-        console.log("ENTERING AAA android.os.Build.getString");
-        var retval;
-        if(CloackedBuildProps[property]!=null)
-        {
-            retval=CloackedBuildProps[property];
-            console.log(superPrint('android.os.Build.getString',"Java API",retval,true,property));
-        }
-        else
-        {
-            retval=this.get(input);
-            console.log(superPrint('android.os.Build.getString',"Java API",retval,false,property));
-        }
-        return retval;
-    }  );
-	
-*/
-
-//*****************************************************			 Bypassing Native Code		*******************************************/
-	
 	Interceptor.attach(Module.findExportByName( "libc.so" , "__system_property_get" ), 
 	{
 		onEnter: function ( args ) 
-		{
-            //printCloakMethodEnter("libc.so:__system_property_get");
-             
+		{    
 			// reading the input argument and saving it in _name variable in the same instance
 			this._name = args[0].readCString();
 			//console.log(this._name)
@@ -850,14 +765,6 @@ function CloakEmulator()
 		}
 	});
 
-
-//*****************************************************			 Comperhensive list of techniques and dataset		*******************************************/
-
-
-
-
-
-//*****************************************************			 Rootbeer		*******************************************/
 	// File sys checks in Java
 	Java.use('java.io.File')['$init'].overload('java.lang.String','java.lang.String').implementation= function(path,fileName) 
 	{
@@ -894,10 +801,6 @@ function CloakEmulator()
         
 		onEnter: function ( args ) 
 		{
-            //printCloakMethodEnter("libc.so:fopen");
-            //console.log("Argument is: "+args[0].readCString());
-            //this._aa=1;
-
 			var prop = Memory.readCString(args[ 0 ]);
 			//console.log("libc.so  fopen was called with "+ prop + "   !!!!!!!!!");
 			let map = 
@@ -930,7 +833,6 @@ function CloakEmulator()
             }
             argumentsLikeJavascriptObject[0]=prop;
             */
-            
         
             if (map[prop]!=null) 
 			{
@@ -944,37 +846,26 @@ function CloakEmulator()
             }
             
 		},
-        
 		onLeave: function ( retval ) 
-        {
-            
+        {  
         }
 	});
-
-     //To do if I decide to manipulate Runtime.exec (Required for RootBeer
         
 	overideByIndex("java.lang.Runtime","exec",5, function(input) 
 	{
-        //console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-        //console.log("input= "+input)
-        
         if (cloackedCommands[input]!=null)
 		{
             var fakeCommand=cloackedCommands[input];
             console.log(superPrint("java.lang.Runtime.exec[5]","Java API","Process *",true,arguments));
             arguments[0]=fakeCommand
-            //console.log("Entered WHICH SU");
             return this["exec"].apply(this,arguments);
 		}
 		else
 		{
-			//console.log("Entered ELSE");
             console.log(superPrint("java.lang.Runtime.exec[5]","Java API","Process *",false,arguments));
             return this["exec"].apply(this,arguments);
 		}
 	});
-
-	 
 
 	function triggerSensor(SensorEventListenerInstance)
 	{
@@ -1012,9 +903,6 @@ function CloakEmulator()
 
 		return this.registerListener(...input);
 	});
-
-
-
 }
 
 
@@ -1026,9 +914,9 @@ function CloakEmulator()
 
 Java.perform(function() 
 {
-
     monitorDangerousJavaAPIs();
     monitorJavaReflectionMethodInvokes();
     //monitorNativeDangerousMethods();
     CloakEmulator();   
 });
+
