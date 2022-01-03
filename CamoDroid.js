@@ -543,7 +543,7 @@ function monitorJavaReflectionMethodInvokes() {
 
 
 /*****************************************************************************/
-///////    TO DO                  Monitoring Native calls        //////////////
+///////                           Monitoring Native calls        //////////////
 /*****************************************************************************/
 // This function monitors the execution of some Native functions (fopen, etc.) on Android.
 function monitorNativeDangerousMethods() {
