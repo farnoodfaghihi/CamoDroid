@@ -601,6 +601,7 @@ function showFridaToast(text) {
 
 ////*************************         Global Variables are defined here           ********************/////////////////
 
+// The interval by which you would like the sensors value to be updated. The time is in milliseconds.
 let sensorTriggerInterval = 500;
 
 let android_os_SystemProperties =
@@ -830,6 +831,7 @@ function CloakEmulator() {
         }
     });
 
+    // This function is called every sensorTriggerInterval milliseconds to update sensor data. 
     function triggerSensor(SensorEventListenerInstance) {
         console.log("triggerSensor was called!");
         Java.scheduleOnMainThread(function () {
@@ -867,6 +869,7 @@ function CloakEmulator() {
 /*****************************************************************************/
 ///////            Main Function          //////////////
 /*****************************************************************************/
+// Main function of CamoDroid
 Java.perform(function () {
     monitorDangerousJavaAPIs();
     monitorJavaReflectionMethodInvokes();
