@@ -495,6 +495,7 @@ var cloackedCommands = { "which,su": "which,s", "getprop": "which s" }
 /*****************************************************************************/
 ///////                     Monitoring Java APIs                 //////////////
 /*****************************************************************************/
+// This function monitors the execution of Sensitive APIs in Android
 function monitorDangerousJavaAPIs() {
     for (let i = 0; i < dangerousJavaAPIs.length; i++) {
         hookJavaAPIAndItsOverloads(dangerousJavaAPIs[i]);
@@ -523,6 +524,7 @@ function hookJavaAPIAndItsOverloads(JavaAPIName) {
 /*****************************************************************************/
 ///////          Monitoring Invoke Calls Using Reflection        //////////////
 /*****************************************************************************/
+// This function monitors the execution of functions that are invoked using Java's Reflection in Android.
 function monitorJavaReflectionMethodInvokes() {
     var classHanle = Java.use("java.lang.reflect.Method");
     var methodHandle = classHanle["invoke"];
@@ -543,6 +545,7 @@ function monitorJavaReflectionMethodInvokes() {
 /*****************************************************************************/
 ///////    TO DO                  Monitoring Native calls        //////////////
 /*****************************************************************************/
+// This function monitors the execution of some Native functions (fopen, etc.) on Android.
 function monitorNativeDangerousMethods() {
     for (let i = 0; i < dangerousNativeAPIs.length; i++) {
         hookNativeAPIAndItsOverloads(dangerousNativeAPIs[i]);
@@ -627,6 +630,13 @@ let android_os_SystemProperties =
     "ro.build.host": "SWDH2812"
 };
 
+// This function can be used to replace a function in the original program. 
+// @className is the name of the class that contains the function (for instance, android.telephony.TelephonyManager)
+// @methodName is the name of the method inside the class (for instance, getDeviceId)
+// @overloadIndex is the index of the overload the you would like to manipulate. 
+// @resolver is the new function that you would like to be executed upon the execution of the original function. You can pass any custom function that you like (with a custom return value) as the resolver. 
+// The arguments passed to the original function will be passed to you cusom function using args.
+
 function overideByIndex(className, methodName, overloadIndex, resolver) {
     let handle = Java.use(className);
     let methodHandle = handle[methodName].overloads[overloadIndex];
@@ -643,7 +653,8 @@ function overideByOverload(className, methodName, functionArgTypes, resolver) {
     };
 }
 
-
+// This function cloaks the emulator device to running applications. In this way, the application cannot detect the presence of emulator and rooted environment. 
+// If you do not want to use the cloaking functionality of CamoDroid, you can comment this function in the main method.
 function CloakEmulator() {
     //****************************************************************		Overriding Functions		****************************************************************//
 
