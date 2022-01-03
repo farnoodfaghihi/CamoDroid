@@ -34,13 +34,10 @@ function superPrint(methodAndClassName, type, retval, isCloackedMethod, methodAr
     else {
         result += "+++ ";
     }
-
     result += "Entering " + type + " method=== " + methodAndClassName + "\n";
-
     for (var i = 0; i < methodArgs.length; i++) {
         result += ("arg[" + i + "]: " + methodArgs[i] + "\n");
     }
-
     result += "Return value=== " + retval + "\n";
     return result;
 }
@@ -486,9 +483,7 @@ var dangerousJavaAPIs = [
 
 var dangerousNativeAPIs = ["/system/lib/libc.so:fopen",
     "/system/lib/libc.so:__system_property_get"
-
 ];
-
 
 var cloackedCommands = { "which,su": "which,s", "getprop": "which s" }
 
@@ -505,10 +500,8 @@ function monitorDangerousJavaAPIs() {
 function hookJavaAPIAndItsOverloads(JavaAPIName) {
     var className = JavaAPIName.substring(0, (JavaAPIName.lastIndexOf(".")));
     var methodName = JavaAPIName.substring(JavaAPIName.lastIndexOf(".") + 1);
-
     var classHanle = Java.use(className);
     var methodHandle = classHanle[methodName];
-
     for (let i = 0; i < methodHandle.overloads.length; i++) {
         methodHandle.overloads[i].implementation = function () {
             var retval = this[methodName].apply(this, arguments);
@@ -516,10 +509,7 @@ function hookJavaAPIAndItsOverloads(JavaAPIName) {
             return retval;
         };
     }
-
 }
-
-
 
 /*****************************************************************************/
 ///////          Monitoring Invoke Calls Using Reflection        //////////////
@@ -528,16 +518,13 @@ function hookJavaAPIAndItsOverloads(JavaAPIName) {
 function monitorJavaReflectionMethodInvokes() {
     var classHanle = Java.use("java.lang.reflect.Method");
     var methodHandle = classHanle["invoke"];
-
     methodHandle.overloads[0].implementation = function () {
         // Entered mehtod
         var methodAndClassName = this.getDeclaringClass() + "." + this.getName();
         methodAndClassName = methodAndClassName.replace("class ", "");
-
         var retval = this["invoke"].apply(this, arguments);
         console.log(superPrint(methodAndClassName, "Java Reflection", retval, false, arguments));
         return retval;
-
     };
 }
 
@@ -555,7 +542,6 @@ function monitorNativeDangerousMethods() {
 function hookNativeAPIAndItsOverloads(nativeAPIName) {
     var library = nativeAPIName.substring(0, nativeAPIName.lastIndexOf(":"));;
     var functionName = nativeAPIName.substring(nativeAPIName.lastIndexOf(":") + 1);
-
     Interceptor.attach(Module.findExportByName(library, functionName),
         {
             onEnter: function (args) {
@@ -591,7 +577,6 @@ function showOverloads(className, methodName) {
 
 function showFridaToast(text) {
     let context = Java.use('android.app.ActivityThread').currentApplication().getApplicationContext();
-
     Java.scheduleOnMainThread(function () {
         var toast = Java.use("android.widget.Toast");
         toast.makeText(Java.use("android.app.ActivityThread").currentApplication().getApplicationContext(), Java.use("java.lang.String").$new(text), 1).show();
@@ -637,7 +622,6 @@ let android_os_SystemProperties =
 // @overloadIndex is the index of the overload the you would like to manipulate. 
 // @resolver is the new function that you would like to be executed upon the execution of the original function. You can pass any custom function that you like (with a custom return value) as the resolver. 
 // The arguments passed to the original function will be passed to you cusom function using args.
-
 function overideByIndex(className, methodName, overloadIndex, resolver) {
     let handle = Java.use(className);
     let methodHandle = handle[methodName].overloads[overloadIndex];
@@ -658,7 +642,6 @@ function overideByOverload(className, methodName, functionArgTypes, resolver) {
 // If you do not want to use the cloaking functionality of CamoDroid, you can comment this function in the main method.
 function CloakEmulator() {
     //****************************************************************		Overriding Functions		****************************************************************//
-
     // Defining Override Function to use Later for Overriding cerain Functions
     overideByIndex('java.io.File', '$init', 1, function (pathString) {
 
